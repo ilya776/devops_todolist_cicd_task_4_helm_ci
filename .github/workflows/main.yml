@@ -61,9 +61,7 @@ jobs:
 
   docker-ci:
     runs-on: ubuntu-latest
-    if: >
-      (github.event_name == 'push' && github.ref_name == 'develop') ||
-      (github.event_name == 'pull_request' && github.base_ref == 'develop')
+    if: github.ref == 'refs/heads/develop'
     needs: python-ci
     steps:
       - name: Download python artifacts
@@ -87,9 +85,7 @@ jobs:
 
   helm-ci:
     runs-on: ubuntu-latest
-    if: >
-      (github.event_name == 'push' && github.ref_name == 'develop') ||
-      (github.event_name == 'pull_request' && github.base_ref == 'develop')
+    if: github.ref == 'refs/heads/develop'
     needs: python-ci
     steps:
       - name: Download helm artifacts
@@ -112,13 +108,3 @@ jobs:
         with:
           name: chart-package
           path: ./chart-packages/*.tgz
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          commit-message: "Helm CI results"
-          branch: helm-ci-pr
-          title: "Helm CI Updates"
-          body: |
-            This PR includes Helm chart changes.
-            Successful Helm CI run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
