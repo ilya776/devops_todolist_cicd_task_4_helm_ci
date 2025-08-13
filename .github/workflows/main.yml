@@ -92,13 +92,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Helm template
-        run: helm template mychart ./helm-charts
+        run: helm template mychart ./helm-charts/todoapp
 
       - name: Helm lint
-        run: helm lint ./helm-charts
+        run: helm lint ./helm-charts/todoapp
 
       - name: Package chart
-        run: helm package ./helm-charts --destination ./chart-packages
+        run: helm package ./helm-charts/todoapp --destination ./chart-packages
 
       - name: Upload chart package
         uses: actions/upload-artifact@v4
